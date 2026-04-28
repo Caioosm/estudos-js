@@ -11,6 +11,10 @@ const routes = require('../aula106/routes/routes');
 const path = require('path');
 const { middlewareGlobal } = require('./src/middlewares/middleware');
 
+const session = require('express-session');
+const { MongoStore }  = require('connect-mongo');
+const flash = require('connect-flash');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'public')));
 
@@ -19,6 +23,19 @@ app.set('view engine', 'ejs');
 
 app.use(middlewareGlobal);
 app.use(routes);
+
+app.use(session({
+    secret: 'asdasdasdasdasdasdasd',
+    store: MongoStore.create({ mongoUrl: connectString }),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true
+    }
+}))
+
+app.use(flash());
 
 mongoose.connect(connectString)
     .then(() => {
