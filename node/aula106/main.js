@@ -5,24 +5,21 @@ const app = express();
 const mongoose = require('mongoose');
 // const connectString = 'mongodb+srv://caio-userdb:5jhcaP6RgbQuMo9R@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const connectString = process.env.CONNECTIONSTRING;
-
-const port = 3000;
-const routes = require('../aula106/routes/routes');
-const path = require('path');
-const { middlewareGlobal } = require('./src/middlewares/middleware');
-
 const session = require('express-session');
 const { MongoStore }  = require('connect-mongo');
 const flash = require('connect-flash');
 
+const routes = require('../aula106/routes/routes');
+const path = require('path');
+const helmet = require('helmet');
+const csrf = require('csurf');
+const { middlewareGlobal, checkCsrfError, csrfMiddleware } = require('./src/middlewares/middleware');
+const port = 3000;
+
+app.use(helmet());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'public')));
-
-app.set('views', path.resolve(__dirname, 'src', 'views'));
-app.set('view engine', 'ejs');
-
-app.use(middlewareGlobal);
-app.use(routes);
 
 app.use(session({
     secret: 'asdasdasdasdasdasdasd',
@@ -34,6 +31,17 @@ app.use(session({
         httpOnly: true
     }
 }))
+
+app.set('views', path.resolve(__dirname, 'src', 'views'));
+app.set('view engine', 'ejs');
+
+app.use(csrf());
+app.use(middlewareGlobal);
+app.use(checkCsrfError);
+app.use(csrfMiddleware);
+app.use(routes);
+
+
 
 app.use(flash());
 
