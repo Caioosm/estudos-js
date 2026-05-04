@@ -1,8 +1,15 @@
+//testar persistencia de dados com ALUNO
+import Aluno from "../models/Aluno.js";
+
 class HomeController{
-    index(req, res) {
-        res.json({
-            tudoCerto: true
+    async index(req, res) {
+        const novoAluno = await Aluno.create({
+            nome: "teste",
+            sobrenome: "sobrenome",
+            email: "email@email.com",
+            idade: 20
         });
+        res.json(novoAluno);
     }
 }
 

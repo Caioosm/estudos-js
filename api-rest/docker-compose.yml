@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgrescursojs:
+    container_name: cursojsdb
+    image: postgres:17
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cursojsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - cursojsdb_data:/var/lib/postgresql/data
+
+volumes:
+  cursojsdb_data: {}
