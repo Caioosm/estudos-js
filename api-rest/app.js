@@ -5,6 +5,7 @@ import alunoRoutes from './src/routes/alunoRoute.js';
 import userRoutes from './src/routes/user.js';
 import tokenRoutes from './src/routes/tokenRoute.js';
 import imageRoutes from './src/routes/imageRouter.js';
+import { resolve } from 'path';
 import './src/database/index.js';
 dotenv.config();
 
@@ -18,6 +19,7 @@ class App {
     middlewares() {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
+        this.app.use(express.static(resolve(__dirname, 'uploads')));
     }
 
     routes() {

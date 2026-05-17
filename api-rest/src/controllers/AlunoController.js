@@ -1,9 +1,17 @@
 //testar persistencia de dados com ALUNO
 import Aluno from "../models/Aluno.js";
+import Images from "../models/Images.js";
 
 class AlunoController{
     async index(req, res) {
-        const alunos = await Aluno.findAll();
+        const alunos = await Aluno.findAll({
+            attributes: ['id', 'nome', 'sobrenome', 'email', 'idade'],
+            order: [[Images, 'id', 'DESC']],
+            include: {
+                model: Images,
+                attributes: ['url', 'filename'],
+            }
+        });
         res.json(alunos);
     }
 
@@ -26,7 +34,13 @@ class AlunoController{
                 return res.status(400).json({ errors: ['Missing ID'] });
             }
             
-            const aluno = await Aluno.findByPk(id);
+            const aluno = await Aluno.findByPk(id, {
+                attributes: ['id', 'nome', 'sobrenome', 'email', 'idade'],
+                include: {
+                    model: Images,
+                    attributes: ['url', 'filename'],
+                }
+            });
 
             if(!aluno){
                 return res.status(404).json({ errors: ['Aluno não encontrado'] });

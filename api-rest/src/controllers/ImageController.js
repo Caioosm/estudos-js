@@ -12,14 +12,18 @@ class ImageController{
                 return res.status(400).json({ errors: [err.code] });
             }
 
-            const { originalname, filename } = req.file;
-            const { aluno_id } = req.body;
-            const image = await Images.create({originalname, filename, aluno_id});
-            
-            return res.json(image);
-        })
+            try {
+                const { originalname, filename } = req.file;
+                const { aluno_id } = req.body;
+                const image = await Images.create({originalname, filename, aluno_id});
+                
+                return res.json(image);
+            } catch (error) {
+                return res.status(400).json({ errors: [error.message] });
+            }
+        });
 
-    }
+    };
 }
 
 export default new ImageController();
