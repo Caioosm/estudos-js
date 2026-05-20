@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+//form
+import { FaPlus } from 'react-icons/fa';
+
 import './Main.css';
 
 export default class Main extends Component {
@@ -20,9 +23,14 @@ export default class Main extends Component {
             <div className="main">
                 <h1>Lista de tarefas</h1>
 
-                <form action="#">
-                    <input  onChange={this.handleChange} type="text" placeholder="Digite uma tarefa" />
-                    <button type="submit">Adicionar</button>
+                <form action="#" className="form">
+                    <input
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="Digite uma tarefa"
+                        value={novaTarefa}
+                    />
+                    <button type="submit"><FaPlus /></button>
                 </form>
             </div>
         );
