@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
+import { primaryColor, primaryDarkColor } from '../config/colors';
 
 export default createGlobalStyle`
   * {
@@ -11,7 +12,8 @@ export default createGlobalStyle`
 
   body {
     font-family: 'Roboto', sans-serif;
-    background: #eee;
+    background: ${primaryDarkColor};
+    color: ${primaryColor};
   }
 
   html, body, #root {
@@ -20,10 +22,17 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+    background: ${primaryColor};
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
   }
 
   a {
     text-decoration: none;
+    color: ${primaryColor};
   }
 
   ul {
@@ -37,5 +46,5 @@ export const Container = styled.section`
   margin: 30px auto;
   padding: 30px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 `;
