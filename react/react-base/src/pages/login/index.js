@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Container } from '../../styles/GlobalStyles';
 
@@ -7,15 +8,14 @@ import { Title } from './styled';
 import axios from '../../services/axios';
 
 export default function Login() {
-  React.useEffect(() => {
-    async function getData(){
-      const response = await axios.get('/alunos');
-      const { data } = response;
-      console.log(data);
-    }
+  const dispatch = useDispatch();
+  function handleClick(e) {
+    e.preventDefault();
 
-    getData();
-  }, []);
+    dispatch({
+      type: 'LOGIN_REQUEST',
+    });
+  }
 
   return (
     <Container>
@@ -24,7 +24,7 @@ export default function Login() {
         <small>Page</small>
       </Title>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <button type="button">Entrar</button>
+      <button type="button" onClick={handleClick} >Entrar</button>
     </Container>
   );
 }
