@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Container } from '../../styles/GlobalStyles';
-
+import * as ExampleActions from '../../store/modules/example/actions';
 import { Title } from './styled';
 
 import axios from '../../services/axios';
@@ -12,9 +12,7 @@ export default function Login() {
   function handleClick(e) {
     e.preventDefault();
 
-    dispatch({
-      type: 'LOGIN_REQUEST',
-    });
+    dispatch(ExampleActions.login_request());
   }
 
   return (
