@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import * as types from '../types';
 import * as actions from './actions';
 
-const requisicao = () => new Promise((resolve, reject) => {
+const requisicao = () => new Promise(resolve => {
   setTimeout(() => {
     resolve('Requisição feita com sucesso!');
-  }, 2000);
+  }, 600);
 });
 
 function* examploRequest(){
