@@ -40,18 +40,18 @@ export default createGlobalStyle`
     list-style: none;
   }
 
-  body .Toastify  .Toastify__toast-container .Toastify__toast--success {
+  body .Toastify .Toastify__toast-container .Toastify__toast--success {
     background: ${successColor};
   }
 
-  body .Toastify  .Toastify__toast-container .Toastify__toast--error {
+  body .Toastify .Toastify__toast-container .Toastify__toast--error {
     background: ${errorColor};
   }
 
 `;
 
 export const Container = styled.section`
-  max-width: 360px;
+  max-width: 480px;
   background: #fff;
   margin: 30px auto;
   padding: 30px;
