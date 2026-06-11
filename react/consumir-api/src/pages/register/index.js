@@ -7,11 +7,13 @@ import { isEmail } from 'validator';
 import { get } from 'lodash';
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
+import Loading from '../../components/loading';
 
 export default function Register() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [passwordv, setPasswordv] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,6 +37,8 @@ export default function Register() {
 
     if(formErrors) return;
 
+    setIsLoading(true);
+
     try {
       await axios.post('/users', {
         nome,
@@ -42,15 +46,18 @@ export default function Register() {
         email
       });
       toast.success('Registro criado com sucesso!');
+      setIsLoading(false);
       history.push('/login');
     } catch (err) {
       const errors = get(err, 'response.data.errors', []);
       errors.map(error => toast.error(error));
+      setIsLoading(false);
     }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Crie sua conta</h1>
 
       <Form onSubmit={handleSubmit}>
@@ -64,16 +71,6 @@ export default function Register() {
           />
         </label>
 
-        <label htmlFor="password">
-          Senha:
-          <input
-            type='password'
-            value={passwordv}
-            onChange={e => setPasswordv(e.target.value)}
-            placeholder='Digite sua senha'
-          />
-        </label>
-
         <label htmlFor="email">
           Email:
           <input
@@ -81,6 +78,16 @@ export default function Register() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder='Digite seu email'
+          />
+        </label>
+
+        <label htmlFor="password">
+          Senha:
+          <input
+            type='password'
+            value={passwordv}
+            onChange={e => setPasswordv(e.target.value)}
+            placeholder='Digite sua senha'
           />
         </label>
 

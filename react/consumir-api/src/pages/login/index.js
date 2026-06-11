@@ -8,19 +8,21 @@ import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 import * as actions from '../../store/modules/auth/actions';
 import { get } from 'lodash';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/loading';
 
 export default function Login(props) {
   const dispatch = useDispatch();
 
   const prevPath = get(props, 'location.state.prevPath', '/');
+  
+  const isLoading = useSelector(state => state.auth.isLoading);
 
   const [email, setEmail] = useState('');
   const [passwordv, setPasswordv] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
 
     let formErrors = false;
 
@@ -41,6 +43,7 @@ export default function Login(props) {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Faça seu login</h1>
       <Form onSubmit={handleSubmit}>
         <input

@@ -15,12 +15,19 @@ export default function(state = initialState, action) {
         isLoggedIn: true,
         token: action.payload.token,
         user: action.payload.user,
+        isLoading: false
       };
     }
 
     case type.LOGIN_FAILURE:
       const newState = { ...initialState };
       return newState;
+
+    case type.LOGIN_REQUEST: {
+      const newState = { ...state };
+      newState.isLoading = true;
+      return newState;
+    }
 
     default:
       return state;
