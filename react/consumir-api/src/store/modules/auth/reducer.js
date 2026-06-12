@@ -29,6 +29,32 @@ export default function(state = initialState, action) {
       return newState;
     }
 
+    case type.REGISTER_REQUEST: {
+      const newState = { ...state };
+      newState.isLoading = true;
+      return newState;
+    }
+
+    case type.REGISTER_UPDATED_SUCCESS: {
+      const newState = { ...state };
+      newState.user.nome = action.payload.nome;
+      newState.user.email = action.payload.email;
+      newState.isLoading = false;
+      return newState;
+    }
+
+    case type.REGISTER_CREATED_SUCCESS: {
+      const newState = { ...state };
+      newState.isLoading = false;
+      return newState;
+    }
+
+    case type.REGISTER_FAILURE: {
+      const newState = { ...state };
+      newState.isLoading = false;
+      return newState;
+    }
+
     default:
       return state;
   }
