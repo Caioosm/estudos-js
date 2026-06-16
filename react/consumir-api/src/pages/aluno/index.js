@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { isEmail } from 'validator';
+import { isEmail, isInt } from 'validator';
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import Loading from '../../components/loading';
+import axios from '../../services/axios';
+import history from '../../services/history';
 
 export default function Aluno({ match }) {
   const dispatch = useDispatch();
@@ -14,6 +17,33 @@ export default function Aluno({ match }) {
   const [sobrenome, setSobrenome] = useState('');
   const [idade, setIdade] = useState('');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if(!id) return;
+    async function getDataAluno() {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(`/alunos/${id}`);
+        const Foto = get(data, 'Image[0].url', '');
+
+        setNome(data.nome);
+        setSobrenome(data.sobrenome);
+        setIdade(data.idade);
+        setEmail(data.email);
+
+        setIsLoading(false);
+      } catch(err){
+        setIsLoading(false);
+        const status = get(err, 'response.status', 0);
+        const errors = get(err, 'response.data.errors', []);
+        if(status == 400) errors.map(error => toast.error(error));
+        history.push('/');
+      }
+    }
+
+    getDataAluno();
+  }, [id]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -29,14 +59,14 @@ export default function Aluno({ match }) {
       toast.error('Sobrenome deve conter entre 3 e 255 caracteres');
     }
 
+    if(!isInt(String(idade))){
+      formErros = true;
+      toast.error('Idade invalida!')
+    }
+
     if(!isEmail(email)){
       formErros = true;
       toast.error('Email inválido');
-    }
-
-    if(idade != Number){
-      formErros = true;
-      toast.error('Idade precisa ser um numero!')
     }
 
     if(formErros) return;
@@ -46,6 +76,7 @@ export default function Aluno({ match }) {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>{id ? 'Editar Aluno' : 'Novo Aluno'}</h1>
 
       <Form onSubmit={handleSubmit}>
