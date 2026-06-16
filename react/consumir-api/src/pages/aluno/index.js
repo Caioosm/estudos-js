@@ -6,6 +6,7 @@ import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import * as actions from '../../store/modules/auth/actions'
 import Loading from '../../components/loading';
 import axios from '../../services/axios';
 import history from '../../services/history';
@@ -45,7 +46,7 @@ export default function Aluno({ match }) {
     getDataAluno();
   }, [id]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     let formErros = false;
 
@@ -71,7 +72,42 @@ export default function Aluno({ match }) {
 
     if(formErros) return;
 
-    // dispatch();
+    try {
+      setIsLoading(true);
+      if(id) {
+        //editando
+        await axios.put(`/alunos/${id}`, {
+          nome,
+          sobrenome,
+          idade,
+          email
+        });
+        toast.success('Aluno editado com sucesso!');
+      } else {
+        //criando
+        const {data} = await axios.post(`/alunos/`, {
+          nome,
+          sobrenome,
+          idade,
+          email
+        });
+        toast.success('Aluno registrado com sucesso!');
+        history.push(`/aluno/${data.id}/edit`);
+      }
+      setIsLoading(false);
+    } catch(err) {
+      const status = get(err, 'response.status', 0);
+      const data = get(err, 'response.data', []);
+      const errors = get(data, 'errors', []);
+
+      if(errors.length > 0) {
+        errors.map(error => toast.error(error))
+      } else {
+        toast.error("Ocorreu um erro inesperado!")
+      }
+
+      if(status === 401) dispatch(actions.loginFailure());
+    }
   };
 
   return (
