@@ -17,9 +17,7 @@ export const Form = styled.form`
 `
 
 export const Title = styled.h1`
-  h1 {
-    text-align: center;
-  }
+  text-align: center;
 `
 
 export const ProfilePicture = styled.div`
