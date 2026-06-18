@@ -6,6 +6,7 @@ import { About } from './components/about';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Menu } from './components/menu';
+import { Post } from './components/post';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,8 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
+        <Route path='/post/:id' element={<Post />} />
+        <Route path='/post' element={<Post />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
