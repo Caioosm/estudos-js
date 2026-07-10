@@ -15,8 +15,11 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "prettier": "^3.8.4",
+    "ts-loader": "^9.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1"
   },
   "dependencies": {
     "-": "^0.0.1-security.1",
